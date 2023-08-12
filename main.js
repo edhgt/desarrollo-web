@@ -1,24 +1,91 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+let displayValue = "";
 
-setupCounter(document.querySelector('#counter'))
+function appendToDisplay(value) {
+  displayValue += value;
+  document.getElementById("display").value = displayValue;
+}
+
+function calculate() {
+  try {
+    const result = evaluateExpression(displayValue);
+    document.getElementById("display").value = result;
+  } catch (error) {
+    document.getElementById("display").value = "Error";
+  }
+}
+
+function clearDisplay() {
+  displayValue = "";
+  document.getElementById("display").value = displayValue;
+}
+
+function evaluateExpression(expression) {
+  const operators = ['+', '-', '*', '/'];
+  const numbers = [];
+  const operatorsArray = [];
+  
+  let currentNumber = "";
+  
+  for (let i = 0; i < expression.length; i++) {
+    const char = expression[i];
+    
+    if (!isNaN(char) || char === '.') {
+      currentNumber += char;
+    } else if (operators.includes(char)) {
+      numbers.push(parseFloat(currentNumber));
+      operatorsArray.push(char);
+      currentNumber = "";
+    }
+  }
+  
+  numbers.push(parseFloat(currentNumber));
+  
+  let result = numbers[0];
+  
+  for (let i = 0; i < operatorsArray.length; i++) {
+    const operator = operatorsArray[i];
+    const nextNumber = numbers[i + 1];
+    
+    switch (operator) {
+      case '+':
+        result += nextNumber;
+        break;
+      case '-':
+        result -= nextNumber;
+        break;
+      case '*':
+        result *= nextNumber;
+        break;
+      case '/':
+        if (nextNumber !== 0) {
+          result /= nextNumber;
+        } else {
+          throw new Error("Division by zero");
+        }
+        break;
+      default:
+        break;
+    }
+  }
+  
+  return result;
+}
+
+// Escucha de eventos para los botones
+const buttons = document.querySelectorAll(".botones button");
+
+buttons.forEach(button => {
+  button.addEventListener("click", function() {
+    const buttonText = this.textContent;
+    
+    if (buttonText === "=") {
+      calculate();
+    } else if (buttonText === "C") {
+      clearDisplay();
+    } else {
+      appendToDisplay(buttonText);
+    }
+  });
+});

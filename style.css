@@ -4,7 +4,7 @@ body {
   align-items: center;
   min-height: 100vh;
   margin: 0;
-  background-color: #f0f0f0;
+  background-color: #1558bc;
 }
 
 .calculadora {
@@ -19,7 +19,7 @@ body {
   width: 100%;
   margin-bottom: 10px;
   padding: 5px;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .botones {

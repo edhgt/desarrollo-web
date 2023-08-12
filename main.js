@@ -12,7 +12,7 @@ function calculate() {
     const result = evaluateExpression(displayValue);
     document.getElementById("display").value = result;
   } catch (error) {
-    document.getElementById("display").value = "Error";
+    document.getElementById("display").value = "Error: no se puede dividir 0/0";
   }
 }
 
